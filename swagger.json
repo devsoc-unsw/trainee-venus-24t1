@@ -1,0 +1,414 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "time2gather",
+    "description": "time2gather API",
+    "version": "1.0.0"
+  },
+
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Managing user authentication and authorization"
+    },
+    {
+      "name": "Timetable",
+      "description": "Creating and managing timetable"
+    },
+    {
+      "name": "User",
+      "description": "For managing times of individual users"
+    }
+  ],
+
+  "components": {
+    "schemas": {
+      "Password": {
+        "type": "string",
+        "description": "User's password",
+        "example": "password1234"
+      },
+      "Name": {
+        "type": "string",
+        "description": "User's name",
+        "example": "Betty"
+      },
+      "UserId": {
+        "type": "number",
+        "description": "ID of the user",
+        "example": 12
+      },
+      "TimetableId": {
+        "type": "string",
+        "description": "ID of the timetable",
+        "example": "550e8400-e29b-41d4-a716-446655440000"
+      },
+      "Timetable": {
+        "type": "object",
+        "description": "Object containing a timetable with start and end properties",
+        "properties": {
+          "start": {
+            "type": "number",
+            "example": 600,
+            "description": "Start time represented by minutes past midnight"
+          },
+          "end": {
+            "type": "number",
+            "example": 615,
+            "description": "End time represented by minutes past midnight"
+          },
+          "timetable": {
+            "type": "array",
+            "description": "Array of arrays representing the timetable data",
+            "items": {
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "18-05-2024",
+                  "description": "Date in DD-MM-YYYY format"
+                },
+                "times": {
+                  "type": "array",
+                  "description": "List of all timeslots and the number of users who selected the time",
+                  "items": {
+                    "properties": {
+                      "time": {
+                        "type": "number",
+                        "example": 600,
+                        "description": "Time represented by minutes past midnight"
+                      },
+                      "count": {
+                        "type": "number",
+                        "example": 2,
+                        "description": "The number of users who selected the time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserTimes": {
+        "type": "array",
+        "description": "Information about the user's selected dates and times",
+        "items": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "description": "Date in DD-MM-YYYY format",
+              "example": "18-05-2024"
+            },
+            "times": {
+              "type": "array",
+              "description": "List of all timeslots and the number of users who selected the time",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "time": {
+                    "type": "number",
+                    "description": "Time represented by minutes past midnight",
+                    "example": 615
+                  },
+                  "count": {
+                    "type": "number",
+                    "description": "The number users who have selected this time",
+                    "example": 4
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Success": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "InputError": {
+        "description": "Input error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Invalid input"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AccessError": {
+        "description": "Access error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Invalid credentials"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login in or register a user",
+        "description": "Given correct user credentials, returns an user ID for making subsequent calls. A new personal timetable should be created for a newly registered user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/Name"
+                  },
+                  "password": {
+                    "$ref": "#/components/schemas/Password"
+                  },
+                  "timetableId": {
+                    "$ref": "#/components/schemas/TimetableId"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "$ref": "#/components/schemas/UserId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/AccessError"
+          }
+        }
+      }
+    },
+    "/timetable": {
+      "get": {
+        "tags": [
+          "Timetable"
+        ],
+        "summary": "Get a pre-existing timetable",
+        "description": "Returns the details of the timetable of given ID",
+        "parameters": [
+          {
+            "name": "timetableId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TimetableId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Timetable"
+                }   
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InputError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Timetable"
+        ],
+        "summary": "Create a new timetable",
+        "description": "Create a new timetable",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "number",
+                    "example": 600,
+                    "description": "Start time represented by minutes past midnight"
+                  },
+                  "end": {
+                    "type": "number",
+                    "example": 615,
+                    "description": "End time represented by minutes past midnight"
+                  },
+                  "dates": {
+                    "type": "array",
+                    "description": "List of all select dates in DD-MM-YYYY format",
+                    "items": {
+                      "type": "string",
+                      "example": "18-05-2024"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "timetableId": {
+                      "$ref": "#/components/schemas/TimetableId"
+                    }
+                  }
+                }   
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InputError"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get an individual user's selected dates and times",
+        "description": "Returns a list of the user's chosen times. There must be an object for every single unique date.",
+        "parameters": [
+          {
+            "name": "timetableId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TimetableId"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/UserId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timetable": {
+                      "$ref": "#/components/schemas/UserTimes"
+                    }
+                  }
+                }   
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InputError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update a the selected times of a user",
+        "description": "Change a user's selected times, given their user ID and the timetable ID.",
+        "parameters": [
+          {
+            "name": "timetableId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TimetableId"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/UserId"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "timetable": {
+                    "$ref": "#/components/schemas/UserTimes"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }   
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InputError"
+          }
+        }
+      }
+    }
+  }
+}
