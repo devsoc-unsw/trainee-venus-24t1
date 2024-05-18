@@ -225,7 +225,7 @@
           "Timetable"
         ],
         "summary": "Get a pre-existing timetable",
-        "description": "Returns the details of the timetable of given ID",
+        "description": "Returns the details of the timetable with the given ID",
         "parameters": [
           {
             "name": "timetableId",
