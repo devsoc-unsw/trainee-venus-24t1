@@ -10,3 +10,5 @@ cd time2gather
 npm install
 npm run dev
 ```
+
+time2gather API -> https://devsoc-unsw.github.io/trainee-venus-24t1/
