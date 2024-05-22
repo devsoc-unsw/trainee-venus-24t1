@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
+import './calendarStyle.css';
 
 const Calendar = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState(new Date()); // Current date state
 
   const handleClick = (day) => {
-    // if (selectedDays.includes(day)) {
-    //   setSelectedDays(selectedDays.filter(selectedDay => selectedDay !== day));
-    // } else {
-    //   setSelectedDays([...selectedDays, day]);
-    // }
-
     if (!startDate || (startDate && endDate)) {
       setStartDate(day);
       setEndDate(null);
@@ -19,13 +15,15 @@ const Calendar = () => {
     } else {
       const range = [];
       const daysDiff = Math.abs((day.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
-      for (let i = 0; i <= daysDiff; i++) {
-        const nextDay = new Date(startDate);
-        nextDay.setDate(startDate.getDate() + i);
-        range.push(nextDay);
-      }
-      setEndDate(day);
-      setSelectedDays(range);
+      if (daysDiff < 7 && day.getTime() - startDate.getTime() > 0) {
+        for (let i = 0; i <= daysDiff; i++) {
+          const nextDay = new Date(startDate);
+          nextDay.setDate(startDate.getDate() + i);
+          range.push(nextDay);
+        }
+        setEndDate(day);
+        setSelectedDays(range);
+      } 
     }
   };
 
@@ -38,32 +36,38 @@ const Calendar = () => {
   }
 
   const renderCalendar = () => {
-    const today = new Date();
+    const today = currentDate; // Use currentDate instead of new Date()
     const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
     const totalDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  
+
     const days = [];
-    for (let i = 0; i < firstDayOfMonth; i++) {
+    for (let i = 1; i < firstDayOfMonth; i++) {
       days.push(null);
     }
     totalDays.forEach(day => days.push(new Date(today.getFullYear(), today.getMonth(), day)));
 
-    for (const i of selectedDays) {
-      console.log("SELECTED" + i);
-    }
-    days.map((day, index) => console.log(day));
-  
     return (
-      <div className="calendar">
-        {days.map((day, index) => (
-          <div 
-            key={index} 
-            className={`day ${day ? 'active' : 'inactive'} ${isSelected(day) ? 'selected' : 'bruh'}`}
-            onClick={() => day && handleClick(day)}>
-            {day ? day.getDate() : ''}
-          </div>
-        ))}
+      <div>
+        <h3 style={{ color: "#eeee", fontFamily: "sans-serif" }}>{today.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
+        <div id="month-nav">
+          <button onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() - 1, 1))}>
+            Previous Month
+          </button>
+          <button onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() + 1, 1))}>
+            Next Month
+          </button>
+        </div>
+        <div className="calendar">
+          {days.map((day, index) => (
+            <div
+              key={index}
+              className={`day ${day ? 'active' : 'inactive'} ${isSelected(day) ? 'selected' : 'bruh'}`}
+              onClick={() => day && handleClick(day)}>
+              {day ? day.getDate() : ''}
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
