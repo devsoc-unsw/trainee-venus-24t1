@@ -1,0 +1,16 @@
+#event-name {
+  font-size: 1.5rem;
+  border-radius: 3px;
+  border: 0px;
+}
+
+#create-event {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 5%;
+  font-family: sans-serif;
+  background-color: rgb(90, 101, 234);
+  color: white;
+}

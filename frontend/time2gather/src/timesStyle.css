@@ -1,0 +1,20 @@
+label {
+  color: white;
+}
+
+select {
+  font-size: 1rem;
+}
+
+#time-container {
+  background-color: rgb(43, 45, 49);
+  padding: 12px;
+  border-radius: 10px;
+  max-width: 300px;
+  display: grid;
+  justify-items: center;
+}
+
+.time-select {
+  margin: 5px;
+}

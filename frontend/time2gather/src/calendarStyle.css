@@ -1,8 +1,15 @@
-.calendar {
+#dates {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-  max-width: 300px; /* Adjust width as needed */
+  max-width: 300px;
+}
+
+#calendar {
+  max-width: 300px;
+  background-color: rgb(43, 45, 49);
+  padding: 12px;
+  border-radius: 10px;
 }
 
 .day {
@@ -17,20 +24,52 @@
 
 .day.active {
   cursor: pointer;
-  background-color: rgb(30, 31, 34);
-  color: rgb(149, 155, 163);
+  background-color: rgb(78, 80, 87);
+  color: white;
 }
 
 .day.active.selected {
   background-color: rgb(90, 101, 234);
-  color: #fff;
+  color: white;
 }
 
-.day.active:hover {
+#month-year {
+  color: white; 
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  margin: 6px 0px 3px 0px;
+}
+
+.month-button {
+  margin: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: rgb(90, 101, 234);
+  color: white;
+  border: 0px;
+  border-radius: 3px;
+  font-family: sans-serif;
+  padding: 7px 15px 7px 15px;
+}
+
+.day.active:hover, button:hover {
   background-color: rgb(149, 155, 163);
   color: rgb(30, 31, 34);
 }
 
 #month-nav {
-  display: in;
+  display: flex; 
+  justify-content: center;
+}
+
+h4 {
+  color: white;
+  margin: 2px;
+}
+
+p {
+  margin: 2px;
+  font-size: 0.8rem;
+  color: #ccc;
 }

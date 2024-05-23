@@ -5,7 +5,7 @@ const Calendar = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [currentDate, setCurrentDate] = useState(new Date()); // Current date state
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const handleClick = (day) => {
     if (!startDate || (startDate && endDate)) {
@@ -36,7 +36,7 @@ const Calendar = () => {
   }
 
   const renderCalendar = () => {
-    const today = currentDate; // Use currentDate instead of new Date()
+    const today = currentDate;
     const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
     const totalDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -48,27 +48,34 @@ const Calendar = () => {
     totalDays.forEach(day => days.push(new Date(today.getFullYear(), today.getMonth(), day)));
 
     return (
-      <div>
-        <h3 style={{ color: "#eeee", fontFamily: "sans-serif" }}>{today.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
-        <div id="month-nav">
-          <button onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() - 1, 1))}>
-            Previous Month
-          </button>
-          <button onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() + 1, 1))}>
-            Next Month
-          </button>
+      <>
+        <h4>Choose dates</h4>
+        <p>Please choose a single date, or up to 7 consecutive days</p>
+        <div id="calendar">
+          <h3 id="month-year">
+            {today.toLocaleString('default', { month: 'long', year: 'numeric' })}
+          </h3>
+          <div id="month-nav">
+            <button class="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() - 1, 1))}>
+              Previous Month
+            </button>
+            <button class="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() + 1, 1))}>
+              Next Month
+            </button>
+          </div>
+          <div id="dates">
+            {days.map((day, index) => (
+              <div
+                key={index}
+                className={`day ${day ? 'active' : 'inactive'} ${isSelected(day) ? 'selected' : 'bruh'}`}
+                onClick={() => day && handleClick(day)}
+              >
+                {day ? day.getDate() : ''}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="calendar">
-          {days.map((day, index) => (
-            <div
-              key={index}
-              className={`day ${day ? 'active' : 'inactive'} ${isSelected(day) ? 'selected' : 'bruh'}`}
-              onClick={() => day && handleClick(day)}>
-              {day ? day.getDate() : ''}
-            </div>
-          ))}
-        </div>
-      </div>
+      </>
     );
   };
   
@@ -76,10 +83,10 @@ const Calendar = () => {
   return (
     <div>
       {renderCalendar()}
-      <div>
+      <div style={{ color: "white" }}>
         <p>Selected Days:</p>
         {selectedDays.map((day, index) => (
-          <span key={index}>{day.toDateString()}</span>
+          <div key={index}>{day.toDateString()}</div>
         ))}
       </div>
     </div>
