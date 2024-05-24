@@ -2,9 +2,9 @@ import express from 'express';
 const app = express()
 const port = 3200
 
-// Require route modules
-const timetableRoutes = require('./routes/timetable')
-const userRoutes = require('./routes/user')
+// Import route modules
+import timetableRoutes from './routes/timetable'
+import userRoutes from './routes/user'
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
