@@ -9,6 +9,27 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+app.post('/auth', (req, res) => {
+  const { name, password, timetableId } = req.body;
+});
+
+app.get('/timetable', (req, res) => {
+  const timetableId = req.query.timetableId;
+});
+
+app.post('/timetable', (req, res) => {
+  const { start, end, dates } = req.body;
+});
+
+app.get('/user', (req, res) => {
+  const timetableId = req.query.timetableId;
+  const userId = req.query.userId;
+});
+
+app.put('/user', (req, res) => {
+  const { timetableId, userId } = req.body;
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 })
