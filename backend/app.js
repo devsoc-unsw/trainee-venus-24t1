@@ -1,8 +1,9 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 const app = express()
 const port = 3200
-
+const mongoDBURL = 'mongodb+srv://marcusryan143:tDi0VQg8No0oBmej@cluster0.0jxc2ty.mongodb.net/database-name?retryWrites=true&w=majority&appName=Cluster0';
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
@@ -30,9 +31,17 @@ app.put('/user', (req, res) => {
   const { timetableId, userId } = req.body;
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
-})
+mongoose
+  .connect(mongoDBURL)
+  .then(() => {
+    console.log('App connected to database');
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`)
+    })
+  })
+  .catch((error) => {
+    console.log(error);
+  })
 
 app.use((req, res) => {
   const error = `
