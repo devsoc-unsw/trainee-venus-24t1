@@ -1,10 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import { User, Timetable } from './models/models.js'
+
 const app = express()
 const port = 3200
 const mongoDBURL = 'mongodb+srv://marcusryan143:tDi0VQg8No0oBmej@cluster0.0jxc2ty.mongodb.net/database-name?retryWrites=true&w=majority&appName=Cluster0';
 app.use(morgan('dev'));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
