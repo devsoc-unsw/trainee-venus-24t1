@@ -12,23 +12,58 @@ app.get('/', (req, res) => {
 
 app.post('/auth', (req, res) => {
   const { name, password, timetableId } = req.body;
+  authenticateUser(name, password, timetableId, (error, userId) => {
+    if (error) {
+      res.status(401).json({ error: 'Invalid credentials' });
+    } else {
+      res.json({ userId });
+    }
+  });
 });
 
 app.get('/timetable', (req, res) => {
   const timetableId = req.query.timetableId;
+  getTimetable(timetableId, (error, timetable) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json(timetable);
+    }
+  });
 });
 
 app.post('/timetable', (req, res) => {
   const { start, end, dates } = req.body;
+  createTimetable(start, end, dates, (error, timetableId) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json({ timetableId });
+    }
+  });
 });
 
 app.get('/user', (req, res) => {
   const timetableId = req.query.timetableId;
   const userId = req.query.userId;
+  getUserTimes(timetableId, userId, (error, userTimes) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json(userTimes);
+    }
+  });
 });
 
 app.put('/user', (req, res) => {
   const { timetableId, userId } = req.body;
+  updateUserTimes(timetableId, userId, (error) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json({});
+    }
+  });
 });
 
 mongoose
