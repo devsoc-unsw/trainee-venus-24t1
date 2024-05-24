@@ -6,7 +6,10 @@ const AboutUs = () => {
       style={{
         backgroundColor: 'rgb(30, 31, 34)',
         fontFamily: 'sans-serif',
+        display: 'grid',
+        justifyItems: 'center',
         gap: '10px',
+        paddingTop: '20px',
       }}>
       <h1 style={{ marginTop: '0px', padding: '10px', color: 'rgb(190, 210, 240)' }}>About Us</h1>
       <p style={{ fontSize: 'medium', lineHeight: '25px', maxWidth: '460px' }}>
