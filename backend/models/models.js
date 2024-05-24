@@ -11,17 +11,16 @@ const DateSchema = new Schema({
   times: [TimeSchema]
 });
 
-const UserSchema = new Schema({
-  name: String,
-  password: String,
-  timetableId: String,
-  timetable: [DateSchema]
-});
-
 const TimetableSchema = new Schema({
   start: Number,
   end: Number,
   timetable: [DateSchema]
+});
+
+const UserSchema = new Schema({
+  name: String,
+  password: String,
+  timetable: TimetableSchema
 });
 
 export const User = mongoose.model('User', UserSchema);

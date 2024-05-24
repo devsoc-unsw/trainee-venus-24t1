@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import { User, Timetable } from './models/models.js'
+import { authenticateUser } from './routes/auth.js'
 
 const app = express()
 const port = 3200
@@ -14,14 +15,14 @@ app.get('/', (req, res) => {
 })
 
 app.post('/auth', (req, res) => {
-  const { name, password, timetableId } = req.body;
-  authenticateUser(name, password, timetableId, (error, userId) => {
-    if (error) {
-      res.status(401).json({ error: 'Invalid credentials' });
-    } else {
-      res.json({ userId });
-    }
-  });
+  const { name, password } = req.body;
+  const { userId } = authenticateUser(name, password)
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  } else {
+    return res.json({ userId });
+  }
 });
 
 app.get('/timetable', (req, res) => {
@@ -59,7 +60,8 @@ app.get('/user', (req, res) => {
 });
 
 app.put('/user', (req, res) => {
-  const { timetableId, userId } = req.body;
+  const timetableId = req.query.timetableId;
+  const userId = req.query.userId;
   updateUserTimes(timetableId, userId, (error) => {
     if (error) {
       res.status(400).json({ error: 'Invalid input' });
