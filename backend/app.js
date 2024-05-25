@@ -16,24 +16,24 @@ app.get('/', (req, res) => {
 
 app.post('/auth', (req, res) => {
   const { name, password } = req.body;
-  const { userId } = authenticateUser(name, password)
+  const userId = authenticateUser(name, password)
 
   if (!userId) {
     return res.status(401).json({ error: 'Invalid credentials' });
   } else {
-    return res.json({ userId });
+    return res.json(userId);
   }
 });
 
 app.get('/timetable', (req, res) => {
   const timetableId = req.query.timetableId;
-  getTimetable(timetableId, (error, timetable) => {
-    if (error) {
-      res.status(400).json({ error: 'Invalid input' });
-    } else {
-      res.json(timetable);
-    }
-  });
+  const timetable = getTimetable(timetableId)
+
+  if (!timetable) {
+    return res.status(400).json({ error: 'Invalid input' });
+  } else {
+    return res.json(timetable);
+  }
 });
 
 app.post('/timetable', (req, res) => {
