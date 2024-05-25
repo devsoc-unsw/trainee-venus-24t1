@@ -20,9 +20,8 @@ app.post('/auth', (req, res) => {
 
   if (!userId) {
     return res.status(401).json({ error: 'Invalid credentials' });
-  } else {
-    return res.json(userId);
   }
+  return res.json(userId);
 });
 
 app.get('/timetable', (req, res) => {
@@ -31,20 +30,18 @@ app.get('/timetable', (req, res) => {
 
   if (!timetable) {
     return res.status(400).json({ error: 'Invalid input' });
-  } else {
-    return res.json(timetable);
   }
+  return res.json(timetable);
 });
 
 app.post('/timetable', (req, res) => {
   const { start, end, dates } = req.body;
-  createTimetable(start, end, dates, (error, timetableId) => {
-    if (error) {
-      res.status(400).json({ error: 'Invalid input' });
-    } else {
-      res.json({ timetableId });
-    }
-  });
+  const newTimetableId = createTimetable(start, end, dates)
+
+  if (!newTimetable) {
+    res.status(400).json({ error: 'Invalid input' });
+  }
+  return res.json(newTimetableId);
 });
 
 app.get('/user', (req, res) => {
