@@ -63,9 +63,9 @@
             "items": {
               "properties": {
                 "date": {
-                  "type": "string",
-                  "example": "18-05-2024",
-                  "description": "Date in DD-MM-YYYY format"
+                  "type": "object",
+                  "example": "Fri May 24 2024 12:28:20 GMT+1200 (New Zealand Standard Time)",
+                  "description": "Date"
                 },
                 "times": {
                   "type": "array",
@@ -96,9 +96,9 @@
         "items": {
           "properties": {
             "date": {
-              "type": "string",
-              "description": "Date in DD-MM-YYYY format",
-              "example": "18-05-2024"
+              "type": "object",
+              "description": "Date",
+              "example": "Fri May 24 2024 12:28:20 GMT+1200 (New Zealand Standard Time)"
             },
             "times": {
               "type": "array",
@@ -277,10 +277,10 @@
                   },
                   "dates": {
                     "type": "array",
-                    "description": "List of all select dates in DD-MM-YYYY format",
+                    "description": "List of all selected dates",
                     "items": {
-                      "type": "string",
-                      "example": "18-05-2024"
+                      "type": "object",
+                      "example": "Fri May 24 2024 12:28:20 GMT+1200 (New Zealand Standard Time)"
                     }
                   }
                 }
