@@ -47,6 +47,11 @@
         "type": "object",
         "description": "Object containing a timetable with start and end properties",
         "properties": {
+          "title": {
+            "type": "string",
+            "example": "All my fellas",
+            "description": "title of the meetup"
+          },
           "start": {
             "type": "number",
             "example": 600,
