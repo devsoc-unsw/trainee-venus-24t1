@@ -56,10 +56,10 @@ const Calendar = () => {
             {today.toLocaleString('default', { month: 'long', year: 'numeric' })}
           </h3>
           <div id="month-nav">
-            <button class="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() - 1, 1))}>
+            <button className="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() - 1, 1))}>
               Previous Month
             </button>
-            <button class="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() + 1, 1))}>
+            <button className="month-button" onClick={() => setCurrentDate(new Date(today.getFullYear(), today.getMonth() + 1, 1))}>
               Next Month
             </button>
           </div>

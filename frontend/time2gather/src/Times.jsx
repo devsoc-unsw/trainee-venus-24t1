@@ -28,7 +28,7 @@ function TimeDropdown() {
 
   return (
     <div id="time-container">
-      <div class="time-select">
+      <div className="time-select">
         <label htmlFor="start-time">Start Time: </label>
         <select id="start-time" value={startTime} onChange={handleStartTimeChange}>
           {timeOptions.map((time, index) => (
@@ -36,7 +36,7 @@ function TimeDropdown() {
           ))}
         </select>
       </div>
-      <div class="time-select">
+      <div className="time-select">
         <label htmlFor="end-time">End Time: </label>
         <select id="end-time" value={endTime} onChange={handleEndTimeChange}>
           {timeOptions.map((time, index) => (

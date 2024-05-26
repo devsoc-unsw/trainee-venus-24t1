@@ -14,3 +14,9 @@
   background-color: rgb(90, 101, 234);
   color: white;
 }
+
+#create-event:hover {
+  cursor: pointer;
+  background-color: rgb(149, 155, 163);
+  color: rgb(30, 31, 34);
+}
