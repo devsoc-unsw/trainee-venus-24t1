@@ -13,7 +13,6 @@
 }
 
 .day {
-  font-family: sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,7 +34,6 @@
 
 #month-year {
   color: white; 
-  font-family: sans-serif;
   display: flex;
   justify-content: center;
   margin: 6px 0px 3px 0px;
@@ -49,7 +47,6 @@
   color: white;
   border: 0px;
   border-radius: 3px;
-  font-family: sans-serif;
   padding: 7px 15px 7px 15px;
 }
 
@@ -63,12 +60,12 @@
   justify-content: center;
 }
 
-h4 {
+#choose-dates {
   color: white;
   margin: 2px;
 }
 
-p {
+#selected-days {
   margin: 2px;
   font-size: 0.8rem;
   color: #ccc;

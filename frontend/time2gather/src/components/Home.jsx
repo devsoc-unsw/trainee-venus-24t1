@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Calendar from './Calendar';
 import Times from './Times';
-import './homeStyle.css';
+import '../style/homeStyle.css';
 import NavBar from './NavBar';
 import AboutUs from './AboutUs';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,6 @@ function Home() {
         <div
           style={{
             backgroundColor: 'rgb(30, 31, 34)',
-            fontFamily: 'sans-serif',
             display: 'grid',
             justifyItems: 'center',
             gap: '20px',

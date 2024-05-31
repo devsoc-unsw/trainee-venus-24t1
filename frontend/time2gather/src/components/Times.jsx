@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './timesStyle.css'
+import '../style/timesStyle.css'
 
 function TimeDropdown() {
   const [startTime, setStartTime] = useState('12:00 AM');

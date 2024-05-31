@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './calendarStyle.css';
+import '../style/calendarStyle.css';
 
 const Calendar = () => {
   const [selectedDays, setSelectedDays] = useState([]);
@@ -48,10 +48,10 @@ const Calendar = () => {
     totalDays.forEach(day => days.push(new Date(today.getFullYear(), today.getMonth(), day)));
 
     return (
-      <>
-        <h4>Choose dates</h4>
-        <p>Please choose a single date, or up to 7 consecutive days</p>
-        <div id="calendar">
+      <div style={{ display: "grid", justifyItems: "center"}}>
+        <h4 id="choose-dates">Choose dates</h4>
+        <p style={{ color: "white" }}>Please choose a single date, or up to 7 consecutive days</p>
+        <div id="calendar" style={{minWidth: "300px"}}>
           <h3 id="month-year">
             {today.toLocaleString('default', { month: 'long', year: 'numeric' })}
           </h3>
@@ -75,7 +75,7 @@ const Calendar = () => {
             ))}
           </div>
         </div>
-      </>
+      </div>
     );
   };
   
@@ -83,10 +83,10 @@ const Calendar = () => {
   return (
     <div>
       {renderCalendar()}
-      <div style={{ color: "white" }}>
-        <p>Selected Days:</p>
+      <div style={{ marginTop: "10px", color: "white", display: "grid", justifyItems: "center"}}>
+        <p id="selected-days">Selected Days:</p>
         {selectedDays.map((day, index) => (
-          <div key={index}>{day.toDateString()}</div>
+          <div style={{fontSize: '0.7rem'}}key={index}>{day.toDateString()}</div>
         ))}
       </div>
     </div>
