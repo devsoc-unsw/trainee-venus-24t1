@@ -1,38 +1,84 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
+import { User, Timetable } from './models/models.js'
+import { authenticateUser } from './routes/auth.js'
+
 const app = express()
 const port = 3200
-
+const mongoDBURL = 'mongodb+srv://marcusryan143:tDi0VQg8No0oBmej@cluster0.0jxc2ty.mongodb.net/database-name?retryWrites=true&w=majority&appName=Cluster0';
 app.use(morgan('dev'));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
 app.post('/auth', (req, res) => {
-  const { name, password, timetableId } = req.body;
+  const { name, password } = req.body;
+  const userId = authenticateUser(name, password)
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+  return res.json(userId);
 });
 
 app.get('/timetable', (req, res) => {
   const timetableId = req.query.timetableId;
+  const timetable = getTimetable(timetableId)
+
+  if (!timetable) {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
+  return res.json(timetable);
 });
 
 app.post('/timetable', (req, res) => {
   const { start, end, dates } = req.body;
+  const newTimetableId = createTimetable(start, end, dates)
+
+  if (!newTimetable) {
+    res.status(400).json({ error: 'Invalid input' });
+  }
+  return res.json(newTimetableId);
 });
 
 app.get('/user', (req, res) => {
   const timetableId = req.query.timetableId;
   const userId = req.query.userId;
+  getUserTimes(timetableId, userId, (error, userTimes) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json(userTimes);
+    }
+  });
 });
 
 app.put('/user', (req, res) => {
-  const { timetableId, userId } = req.body;
+  const timetableId = req.query.timetableId;
+  const userId = req.query.userId;
+  updateUserTimes(timetableId, userId, (error) => {
+    if (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    } else {
+      res.json({});
+    }
+  });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
-})
+mongoose
+  .connect(mongoDBURL)
+  .then(() => {
+    console.log('App connected to database');
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`)
+    })
+  })
+  .catch((error) => {
+    console.log(error);
+  })
 
 app.use((req, res) => {
   const error = `
